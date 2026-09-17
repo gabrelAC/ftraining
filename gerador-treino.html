@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gerador de Treino Grátis | Ferreira Trainning</title>
+<meta name="description" content="Responda 5 perguntas rápidas e receba um treino inicial gratuito, personalizado pro seu objetivo, nível e rotina.">
+<link rel="canonical" href="https://ferreiratrainning.com.br/gerador-treino.html">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%230a0a09'/%3E%3Ctext x='50' y='70' font-family='Arial,sans-serif' font-weight='900' font-size='60' fill='%23ff4d15' text-anchor='middle'%3EF%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Work+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+
+<!-- Supabase JS (opcional): usado só para salvar o lead. Ver bloco "CONFIGURAÇÃO SUPABASE" no <script> final. -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+
+<style>
+  :root{
+    --black:#0a0a09;
+    --black-2:#141210;
+    --card:#1c1a17;
+    --line:#332e28;
+    --orange:#ff4d15;
+    --orange-2:#ff8a3d;
+    --amber:#ffb020;
+    --paper:#f4efe6;
+    --muted:#a89f92;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{
+    background:var(--black);color:var(--paper);
+    font-family:'Work Sans',sans-serif;line-height:1.5;
+  }
+  h1,h2,h3{
+    font-family:'Anton',sans-serif;font-weight:400;text-transform:uppercase;
+    letter-spacing:0.01em;line-height:1;
+  }
+  .mono{font-family:'JetBrains Mono',monospace;}
+  a{color:inherit;text-decoration:none;}
+  .wrap{max-width:1180px;margin:0 auto;padding:0 24px;}
+  :focus-visible{outline:2px solid var(--amber);outline-offset:3px;}
+
+  .eyebrow{
+    font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:0.18em;
+    text-transform:uppercase;color:var(--orange-2);display:flex;align-items:center;gap:10px;
+  }
+  .eyebrow::before{content:"";width:22px;height:2px;background:var(--orange);display:inline-block;}
+
+  header{border-bottom:1px solid var(--line);padding:20px 0;}
+  .nav{display:flex;align-items:center;justify-content:space-between;}
+  .logo{font-family:'Anton',sans-serif;font-size:20px;text-transform:uppercase;}
+  .logo span{color:var(--orange);}
+  .voltar{font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:0.04em;opacity:0.8;}
+  .voltar:hover{opacity:1;color:var(--orange-2);}
+
+  main{padding:64px 0 96px;}
+  .section-head{max-width:640px;margin-bottom:40px;}
+  .section-head h1{font-size:clamp(30px,5vw,48px);margin-top:14px;}
+  .section-head p{color:var(--muted);margin-top:14px;font-size:16px;}
+
+  .btn{
+    display:inline-flex;align-items:center;justify-content:center;gap:8px;
+    background:var(--orange);color:var(--black);
+    font-weight:800;text-transform:uppercase;letter-spacing:0.03em;font-size:13px;
+    padding:13px 24px;border-radius:2px;border:none;cursor:pointer;
+    transition:transform .15s ease, background .2s ease;
+  }
+  .btn:hover{background:var(--orange-2);transform:translateY(-2px);}
+  .btn:disabled{opacity:0.35;cursor:not-allowed;transform:none;}
+  .btn-ghost{background:transparent;border:1px solid var(--line);color:var(--paper);}
+  .btn-ghost:hover{border-color:var(--orange);background:transparent;transform:none;color:var(--orange-2);}
+
+  /* ---------- QUIZ CARD ---------- */
+  .quiz-card{
+    background:var(--card);border:1px solid var(--line);padding:36px 30px;
+    max-width:640px;position:relative;
+  }
+  .progress-bar{height:4px;background:var(--line);margin-bottom:18px;}
+  .progress-fill{height:100%;background:var(--orange);width:20%;transition:width .3s ease;}
+  .step-counter{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:28px;}
+  .quiz-step{display:none;}
+  .quiz-step.active{display:block;}
+  .quiz-step h2{font-size:24px;text-transform:none;font-family:'Work Sans',sans-serif;font-weight:800;margin-bottom:22px;line-height:1.2;}
+
+  .form-field{display:flex;flex-direction:column;gap:6px;margin-bottom:18px;}
+  .form-field label{
+    font-family:'JetBrains Mono',monospace;font-size:11px;text-transform:uppercase;
+    letter-spacing:0.08em;color:var(--muted);
+  }
+  .form-field input{
+    background:var(--black-2);border:1px solid var(--line);color:var(--paper);
+    padding:13px 14px;font-family:'Work Sans',sans-serif;font-size:15px;border-radius:2px;
+  }
+  .form-field input:focus{outline:none;border-color:var(--orange);}
+
+  .option-list{display:flex;flex-direction:column;gap:12px;}
+  .option{
+    width:100%;text-align:left;background:var(--black-2);border:1px solid var(--line);color:var(--paper);
+    padding:16px 18px;font-size:15px;font-weight:600;border-radius:2px;cursor:pointer;
+    transition:border-color .15s ease, background .15s ease;
+  }
+  .option:hover{border-color:var(--orange-2);}
+  .option.selected{border-color:var(--orange);background:linear-gradient(180deg, rgba(255,77,21,0.12), var(--black-2));color:var(--orange-2);}
+
+  .quiz-nav{display:flex;justify-content:space-between;gap:14px;margin-top:32px;}
+
+  /* ---------- RESULTADO ---------- */
+  .quiz-result{max-width:760px;}
+  .result-header{margin-bottom:32px;}
+  .result-header h2{font-size:clamp(26px,4vw,38px);}
+  .result-tags{display:flex;flex-wrap:wrap;gap:10px;margin-top:16px;}
+  .result-tag{
+    border:1px solid var(--line);padding:7px 14px;font-size:12px;
+    font-family:'JetBrains Mono',monospace;text-transform:uppercase;letter-spacing:0.05em;color:var(--orange-2);
+  }
+  .plan-day{background:var(--card);border:1px solid var(--line);padding:24px 26px;margin-bottom:16px;}
+  .plan-day h3{font-size:19px;text-transform:none;font-family:'Work Sans',sans-serif;font-weight:800;margin-bottom:4px;}
+  .plan-day .grupos{color:var(--muted);font-size:13px;margin-bottom:16px;}
+  .plan-day ul{list-style:none;}
+  .plan-day li{
+    padding:10px 0;border-top:1px solid var(--line);font-size:14px;
+    display:flex;justify-content:space-between;gap:12px;
+  }
+  .plan-day li .scheme{color:var(--muted);font-family:'JetBrains Mono',monospace;font-size:12px;white-space:nowrap;}
+  .plan-style-note{color:var(--muted);font-size:13px;margin-top:-4px;margin-bottom:24px;max-width:64ch;}
+  .disclaimer{
+    border:1px solid var(--line);background:var(--black-2);padding:18px 20px;
+    font-size:13px;color:var(--muted);margin:28px 0;max-width:64ch;
+  }
+  .result-actions{display:flex;flex-wrap:wrap;gap:14px;margin-top:8px;}
+  .copy-feedback{font-size:12px;color:var(--amber);margin-top:10px;font-family:'JetBrains Mono',monospace;}
+
+  footer{border-top:1px solid var(--line);padding:32px 0;font-size:12px;color:var(--muted);}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap nav">
+    <a href="ferreira-trainning.html" class="logo">FERREIRA<span>.</span>TRAINNING</a>
+    <a href="ferreira-trainning.html" class="voltar">← Voltar para o site</a>
+  </div>
+</header>
+
+<main>
+  <div class="wrap" style="max-width:820px;">
+
+    <div class="section-head">
+      <span class="eyebrow">Treino grátis</span>
+      <h1>Gerador de treino Ferreira Trainning</h1>
+      <p>Responda algumas perguntas rápidas e receba um treino inicial gratuito, feito pro seu objetivo, nível e rotina.</p>
+    </div>
+
+    <!-- QUIZ -->
+    <div class="quiz-card" id="quiz">
+      <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+      <p class="mono step-counter" id="stepCounter">Passo 1 de 5</p>
+
+      <div class="quiz-step active" data-step="1">
+        <h2>Como você se chama?</h2>
+        <div class="form-field">
+          <label for="q-nome">Nome</label>
+          <input type="text" id="q-nome" placeholder="Seu nome">
+        </div>
+        <div class="form-field">
+          <label for="q-whatsapp">WhatsApp (com DDD)</label>
+          <input type="tel" id="q-whatsapp" placeholder="(11) 91234-5678">
+        </div>
+      </div>
+
+      <div class="quiz-step" data-step="2">
+        <h2>Qual é o seu objetivo principal?</h2>
+        <div class="option-list" data-field="objetivo">
+          <button type="button" class="option" data-value="emagrecimento">Emagrecimento</button>
+          <button type="button" class="option" data-value="hipertrofia">Hipertrofia / ganho de massa</button>
+          <button type="button" class="option" data-value="condicionamento">Condicionamento físico</button>
+          <button type="button" class="option" data-value="saude">Saúde geral / qualidade de vida</button>
+        </div>
+      </div>
+
+      <div class="quiz-step" data-step="3">
+        <h2>Qual é o seu nível de experiência com treino?</h2>
+        <div class="option-list" data-field="nivel">
+          <button type="button" class="option" data-value="iniciante">Iniciante</button>
+          <button type="button" class="option" data-value="intermediario">Intermediário</button>
+          <button type="button" class="option" data-value="avancado">Avançado</button>
+        </div>
+      </div>
+
+      <div class="quiz-step" data-step="4">
+        <h2>Onde você vai treinar?</h2>
+        <div class="option-list" data-field="local">
+          <button type="button" class="option" data-value="academia">Academia completa</button>
+          <button type="button" class="option" data-value="casa_halteres">Casa, com halteres/elásticos</button>
+          <button type="button" class="option" data-value="casa_livre">Casa, sem equipamento</button>
+        </div>
+      </div>
+
+      <div class="quiz-step" data-step="5">
+        <h2>Quantos dias por semana você consegue treinar?</h2>
+        <div class="option-list" data-field="dias">
+          <button type="button" class="option" data-value="3">3 dias por semana</button>
+          <button type="button" class="option" data-value="4">4 dias por semana</button>
+          <button type="button" class="option" data-value="5">5 dias por semana</button>
+        </div>
+      </div>
+
+      <div class="quiz-nav">
+        <button type="button" class="btn btn-ghost" id="btnBack">← Voltar</button>
+        <button type="button" class="btn" id="btnNext" disabled>Próximo →</button>
+      </div>
+    </div>
+
+    <!-- RESULTADO -->
+    <div class="quiz-result" id="result" hidden></div>
+
+  </div>
+</main>
+
+<footer>
+  <div class="wrap">
+    Ferreira Trainning · Este treino é gerado automaticamente e não substitui uma avaliação individual.
+  </div>
+</footer>
+
+<script>
+(function(){
+
+  /* ==========================================================
+     CONFIGURAÇÃO SUPABASE (opcional)
+     Preencha com a URL e a chave "anon" (pública) do seu projeto
+     Supabase para começar a salvar os leads gerados aqui na tabela
+     "leads" (ver arquivo supabase-schema.sql). Enquanto os valores
+     abaixo forem os placeholders, o site funciona normalmente e só
+     não grava nada — nenhuma tentativa de rede é feita.
+  ========================================================== */
+  const SUPABASE_URL = 'SUA_URL_SUPABASE_AQUI';
+  const SUPABASE_ANON_KEY = 'SUA_CHAVE_ANONIMA_AQUI';
+
+  let supabaseClient = null;
+  if (SUPABASE_URL !== 'SUA_URL_SUPABASE_AQUI' && window.supabase) {
+    supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+  }
+
+  async function salvarLeadNoSupabase(lead){
+    if(!supabaseClient) return;
+    try{
+      await supabaseClient.from('leads').insert([lead]);
+    }catch(err){
+      console.error('Erro ao salvar lead no Supabase:', err);
+    }
+  }
+
+  /* ==========================================================
+     NÚMERO DE WHATSAPP DO TREINADOR (fictício — trocar pelo real)
+  ========================================================== */
+  const WHATSAPP_TREINADOR = '5511912345678';
+
+  /* ==========================================================
+     BIBLIOTECA DE TREINOS
+     Os exercícios variam por dias/semana (estrutura da divisão) e
+     local de treino (equipamento disponível). Séries, repetições e
+     descanso variam por objetivo + nível — calculados em getScheme().
+  ========================================================== */
+  const SPLITS = {
+    3: {
+      academia: [
+        {titulo:'Treino A — Inferior + Core', grupos:'Pernas, glúteo e abdômen', exercicios:[
+          'Agachamento livre ou na barra guiada','Leg press 45°','Cadeira extensora','Mesa flexora','Elevação pélvica (hip thrust)','Prancha abdominal'
+        ]},
+        {titulo:'Treino B — Superior Empurrar', grupos:'Peito, ombro e tríceps', exercicios:[
+          'Supino reto com barra ou halteres','Desenvolvimento de ombro com halteres','Crucifixo ou peck deck','Elevação lateral','Tríceps na polia ou francês'
+        ]},
+        {titulo:'Treino C — Superior Puxar', grupos:'Costas e bíceps', exercicios:[
+          'Puxada frontal na polia','Remada baixa sentada','Remada unilateral com halter','Rosca direta com barra ou halteres','Rosca alternada'
+        ]}
+      ],
+      casa_halteres: [
+        {titulo:'Treino A — Inferior + Core', grupos:'Pernas, glúteo e abdômen', exercicios:[
+          'Agachamento com halteres','Afundo (passada) com halteres','Stiff com halteres','Elevação pélvica no chão','Panturrilha em pé','Prancha abdominal'
+        ]},
+        {titulo:'Treino B — Superior Empurrar', grupos:'Peito, ombro e tríceps', exercicios:[
+          'Supino com halteres no chão ou banco','Desenvolvimento de ombro com halteres','Crucifixo com halteres','Elevação lateral com halteres','Tríceps testa ou coice com halteres'
+        ]},
+        {titulo:'Treino C — Superior Puxar', grupos:'Costas e bíceps', exercicios:[
+          'Remada com elástico ou halter apoiado no banco','Puxada com elástico fixado na porta','Remada unilateral com halter','Rosca direta com halteres','Rosca alternada com halteres'
+        ]}
+      ],
+      casa_livre: [
+        {titulo:'Treino A — Inferior + Core', grupos:'Pernas, glúteo e abdômen', exercicios:[
+          'Agachamento livre (peso do corpo)','Afundo (passada) sem peso','Elevação pélvica no chão','Panturrilha em pé','Abdominal supra','Prancha abdominal'
+        ]},
+        {titulo:'Treino B — Superior Empurrar', grupos:'Peito, ombro e tríceps', exercicios:[
+          'Flexão de braço (padrão ou com joelhos apoiados)','Flexão pike (foco em ombro)','Flexão diamante (foco em tríceps)','Apoio de tríceps no banco/cadeira','Prancha com toque no ombro'
+        ]},
+        {titulo:'Treino C — Superior Puxar', grupos:'Costas e bíceps', exercicios:[
+          'Remada invertida em mesa ou barra baixa','Superman (extensão lombar)','Prancha com retração de escápula','Rosca com objetos de peso caseiro','Prancha lateral'
+        ]}
+      ]
+    },
+    4: {
+      academia: [
+        {titulo:'Treino A — Superior 1', grupos:'Peito, ombro e tríceps', exercicios:[
+          'Supino reto com barra ou halteres','Desenvolvimento de ombro','Crucifixo ou peck deck','Tríceps na polia'
+        ]},
+        {titulo:'Treino B — Inferior 1', grupos:'Quadríceps e glúteo', exercicios:[
+          'Agachamento livre ou na barra guiada','Leg press 45°','Cadeira extensora','Panturrilha em pé'
+        ]},
+        {titulo:'Treino C — Superior 2', grupos:'Costas e bíceps', exercicios:[
+          'Puxada frontal na polia','Remada baixa sentada','Remada unilateral com halter','Rosca direta'
+        ]},
+        {titulo:'Treino D — Inferior 2 + Core', grupos:'Posterior, glúteo e abdômen', exercicios:[
+          'Stiff com barra ou halteres','Mesa flexora','Elevação pélvica (hip thrust)','Prancha abdominal'
+        ]}
+      ],
+      casa_halteres: [
+        {titulo:'Treino A — Superior 1', grupos:'Peito, ombro e tríceps', exercicios:[
+          'Supino com halteres no chão ou banco','Desenvolvimento de ombro com halteres','Crucifixo com halteres','Tríceps coice com halteres'
+        ]},
+        {titulo:'Treino B — Inferior 1', grupos:'Quadríceps e glúteo', exercicios:[
+          'Agachamento com halteres','Afundo (passada) com halteres','Agachamento sumô com halter','Panturrilha em pé'
+        ]},
+        {titulo:'Treino C — Superior 2', grupos:'Costas e bíceps', exercicios:[
+          'Remada com halteres apoiado no banco','Puxada com elástico fixado na porta','Remada unilateral com halter','Rosca direta com halteres'
+        ]},
+        {titulo:'Treino D — Inferior 2 + Core', grupos:'Posterior, glúteo e abdômen', exercicios:[
+          'Stiff com halteres','Elevação pélvica no chão','Panturrilha unilateral','Prancha abdominal'
+        ]}
+      ],
+      casa_livre: [
+        {titulo:'Treino A — Superior 1', grupos:'Peito, ombro e tríceps', exercicios:[
+          'Flexão de braço','Flexão pike (foco em ombro)','Flexão com pés elevados','Apoio de tríceps no banco/cadeira'
+        ]},
+        {titulo:'Treino B — Inferior 1', grupos:'Quadríceps e glúteo', exercicios:[
+          'Agachamento livre','Afundo (passada) sem peso','Agachamento sumô','Panturrilha em pé'
+        ]},
+        {titulo:'Treino C — Superior 2', grupos:'Costas e core', exercicios:[
+          'Remada invertida em mesa ou barra baixa','Superman (extensão lombar)','Prancha com retração de escápula','Prancha lateral'
+        ]},
+        {titulo:'Treino D — Inferior 2 + Core', grupos:'Posterior, glúteo e abdômen', exercicios:[
+          'Ponte de glúteo unilateral','Elevação pélvica no chão','Abdominal supra','Prancha abdominal'
+        ]}
+      ]
+    },
+    5: {
+      academia: [
+        {titulo:'Treino A — Push (Peito/Ombro/Tríceps)', grupos:'Empurrar', exercicios:[
+          'Supino reto com barra ou halteres','Desenvolvimento de ombro','Crucifixo ou peck deck','Tríceps na polia'
+        ]},
+        {titulo:'Treino B — Pull (Costas/Bíceps)', grupos:'Puxar', exercicios:[
+          'Puxada frontal na polia','Remada baixa sentada','Remada unilateral com halter','Rosca direta'
+        ]},
+        {titulo:'Treino C — Legs (Pernas)', grupos:'Quadríceps, posterior e glúteo', exercicios:[
+          'Agachamento livre ou na barra guiada','Leg press 45°','Cadeira extensora','Mesa flexora','Panturrilha em pé'
+        ]},
+        {titulo:'Treino D — Superior Geral', grupos:'Peito, costas e ombro', exercicios:[
+          'Supino inclinado com halteres','Remada cavalinho ou máquina','Elevação lateral','Face pull na polia'
+        ]},
+        {titulo:'Treino E — Inferior + Core', grupos:'Glúteo, posterior e abdômen', exercicios:[
+          'Stiff com barra ou halteres','Elevação pélvica (hip thrust)','Cadeira abdutora','Prancha abdominal'
+        ]}
+      ],
+      casa_halteres: [
+        {titulo:'Treino A — Push (Peito/Ombro/Tríceps)', grupos:'Empurrar', exercicios:[
+          'Supino com halteres no chão ou banco','Desenvolvimento de ombro com halteres','Crucifixo com halteres','Tríceps testa com halteres'
+        ]},
+        {titulo:'Treino B — Pull (Costas/Bíceps)', grupos:'Puxar', exercicios:[
+          'Remada com halteres apoiado no banco','Puxada com elástico fixado na porta','Remada unilateral com halter','Rosca alternada com halteres'
+        ]},
+        {titulo:'Treino C — Legs (Pernas)', grupos:'Quadríceps, posterior e glúteo', exercicios:[
+          'Agachamento com halteres','Afundo (passada) com halteres','Stiff com halteres','Panturrilha em pé'
+        ]},
+        {titulo:'Treino D — Superior Geral', grupos:'Peito, costas e ombro', exercicios:[
+          'Supino inclinado com halteres','Remada com elástico','Elevação lateral com halteres','Puxada de escápula com elástico'
+        ]},
+        {titulo:'Treino E — Inferior + Core', grupos:'Glúteo, posterior e abdômen', exercicios:[
+          'Stiff unilateral com halter','Elevação pélvica no chão','Abdução de quadril com elástico','Prancha abdominal'
+        ]}
+      ],
+      casa_livre: [
+        {titulo:'Treino A — Push (Peito/Ombro/Tríceps)', grupos:'Empurrar', exercicios:[
+          'Flexão de braço','Flexão pike (foco em ombro)','Flexão diamante (foco em tríceps)','Apoio de tríceps no banco/cadeira'
+        ]},
+        {titulo:'Treino B — Pull (Costas/Bíceps)', grupos:'Puxar', exercicios:[
+          'Remada invertida em mesa ou barra baixa','Superman (extensão lombar)','Prancha com retração de escápula','Rosca com objetos de peso caseiro'
+        ]},
+        {titulo:'Treino C — Legs (Pernas)', grupos:'Quadríceps, posterior e glúteo', exercicios:[
+          'Agachamento livre','Afundo (passada) sem peso','Agachamento sumô','Panturrilha em pé'
+        ]},
+        {titulo:'Treino D — Superior Geral', grupos:'Peito, costas e ombro', exercicios:[
+          'Flexão de braço aberta','Remada invertida','Prancha com elevação de braço','Prancha lateral com rotação'
+        ]},
+        {titulo:'Treino E — Inferior + Core', grupos:'Glúteo, posterior e abdômen', exercicios:[
+          'Ponte de glúteo unilateral','Elevação pélvica no chão','Abdominal supra','Prancha abdominal'
+        ]}
+      ]
+    }
+  };
+
+  const LABELS = {
+    objetivo:{emagrecimento:'Emagrecimento',hipertrofia:'Hipertrofia / ganho de massa',condicionamento:'Condicionamento físico',saude:'Saúde geral / qualidade de vida'},
+    nivel:{iniciante:'Iniciante',intermediario:'Intermediário',avancado:'Avançado'},
+    local:{academia:'Academia completa',casa_halteres:'Casa, com halteres/elásticos',casa_livre:'Casa, sem equipamento'}
+  };
+
+  function getScheme(objetivo, nivel){
+    const TABELA = {
+      emagrecimento:{series:{iniciante:2,intermediario:3,avancado:3}, reps:'15-20', descanso:'30-45s', estilo:'Formato circuito: descanse pouco entre exercícios pra manter o ritmo cardiovascular elevado.'},
+      hipertrofia:{series:{iniciante:3,intermediario:4,avancado:4}, reps:'8-12', descanso:'60-90s', estilo:'Foco em execução controlada e aumento progressivo de carga a cada semana.'},
+      condicionamento:{series:{iniciante:2,intermediario:3,avancado:4}, reps:'12-15', descanso:'30s', estilo:'Formato funcional/circuito, priorizando ritmo, respiração e resistência.'},
+      saude:{series:{iniciante:2,intermediario:3,avancado:3}, reps:'10-15', descanso:'60s', estilo:'Foco em consistência e execução correta — carga evolui aos poucos, sem pressa.'}
+    };
+    const t = TABELA[objetivo];
+    return {series:t.series[nivel], reps:t.reps, descanso:t.descanso, estilo:t.estilo};
+  }
+
+  /* ========================================================== */
+
+  const state = {nome:'', whatsapp:'', objetivo:'', nivel:'', local:'', dias:''};
+  let currentStep = 1;
+  const TOTAL_STEPS = 5;
+
+  const quiz = document.getElementById('quiz');
+  const result = document.getElementById('result');
+  const progressFill = document.getElementById('progressFill');
+  const stepCounter = document.getElementById('stepCounter');
+  const btnBack = document.getElementById('btnBack');
+  const btnNext = document.getElementById('btnNext');
+  const steps = document.querySelectorAll('.quiz-step');
+
+  function isStepValid(step){
+    if(step === 1) return state.nome.trim().length > 1 && state.whatsapp.trim().length > 7;
+    const fieldMap = {2:'objetivo',3:'nivel',4:'local',5:'dias'};
+    return !!state[fieldMap[step]];
+  }
+
+  function renderStep(){
+    steps.forEach(s=> s.classList.toggle('active', Number(s.dataset.step) === currentStep));
+    progressFill.style.width = (currentStep / TOTAL_STEPS * 100) + '%';
+    stepCounter.textContent = 'Passo ' + currentStep + ' de ' + TOTAL_STEPS;
+    btnBack.style.visibility = currentStep === 1 ? 'hidden' : 'visible';
+    btnNext.textContent = currentStep === TOTAL_STEPS ? 'Ver meu treino →' : 'Próximo →';
+    btnNext.disabled = !isStepValid(currentStep);
+  }
+
+  document.getElementById('q-nome').addEventListener('input', e=>{
+    state.nome = e.target.value;
+    btnNext.disabled = !isStepValid(1);
+  });
+  document.getElementById('q-whatsapp').addEventListener('input', e=>{
+    state.whatsapp = e.target.value;
+    btnNext.disabled = !isStepValid(1);
+  });
+
+  document.querySelectorAll('.option-list').forEach(list=>{
+    const field = list.dataset.field;
+    list.querySelectorAll('.option').forEach(btn=>{
+      btn.addEventListener('click', ()=>{
+        state[field] = btn.dataset.value;
+        list.querySelectorAll('.option').forEach(b=> b.classList.remove('selected'));
+        btn.classList.add('selected');
+        btnNext.disabled = !isStepValid(currentStep);
+      });
+    });
+  });
+
+  btnBack.addEventListener('click', ()=>{
+    if(currentStep > 1){ currentStep--; renderStep(); }
+  });
+
+  btnNext.addEventListener('click', ()=>{
+    if(!isStepValid(currentStep)) return;
+    if(currentStep < TOTAL_STEPS){ currentStep++; renderStep(); }
+    else { gerarTreino(); }
+  });
+
+  function gerarTreino(){
+    const dias = Number(state.dias);
+    const dayPlans = SPLITS[dias][state.local];
+    const scheme = getScheme(state.objetivo, state.nivel);
+
+    let planTextoSimples = 'Treino gerado para ' + state.nome + '\n';
+    planTextoSimples += LABELS.objetivo[state.objetivo] + ' · ' + LABELS.nivel[state.nivel] + ' · ' + LABELS.local[state.local] + ' · ' + dias + 'x por semana\n\n';
+
+    let daysHtml = '';
+    dayPlans.forEach(day=>{
+      let itemsHtml = '';
+      planTextoSimples += day.titulo + ' (' + day.grupos + ')\n';
+      day.exercicios.forEach(ex=>{
+        itemsHtml += '<li><span>' + ex + '</span><span class="scheme">' + scheme.series + 'x' + scheme.reps + ' · ' + scheme.descanso + '</span></li>';
+        planTextoSimples += '- ' + ex + ': ' + scheme.series + 'x' + scheme.reps + ' (descanso ' + scheme.descanso + ')\n';
+      });
+      planTextoSimples += '\n';
+      daysHtml += '<div class="plan-day"><h3>' + day.titulo + '</h3><p class="grupos">' + day.grupos + '</p><ul>' + itemsHtml + '</ul></div>';
+    });
+
+    const waMessage = 'Olá, Gabriel! Acabei de usar o Gerador de Treino Grátis no site. ' +
+      'Meu objetivo é ' + LABELS.objetivo[state.objetivo] + ', nível ' + LABELS.nivel[state.nivel] +
+      ', treino em ' + LABELS.local[state.local] + ', ' + dias + 'x por semana. ' +
+      'Meu nome é ' + state.nome + '. Quero receber meu treino completo e saber mais sobre a Consultoria Online!';
+    const waLink = 'https://wa.me/' + WHATSAPP_TREINADOR + '?text=' + encodeURIComponent(waMessage);
+
+    result.innerHTML =
+      '<div class="result-header">' +
+        '<span class="eyebrow">Seu treino ficou pronto</span>' +
+        '<h2 style="margin-top:14px;">' + state.nome + ', aqui está seu ponto de partida.</h2>' +
+        '<div class="result-tags">' +
+          '<span class="result-tag">' + LABELS.objetivo[state.objetivo] + '</span>' +
+          '<span class="result-tag">' + LABELS.nivel[state.nivel] + '</span>' +
+          '<span class="result-tag">' + LABELS.local[state.local] + '</span>' +
+          '<span class="result-tag">' + dias + 'x por semana</span>' +
+        '</div>' +
+      '</div>' +
+      '<p class="plan-style-note">' + scheme.estilo + '</p>' +
+      daysHtml +
+      '<div class="disclaimer">Este é um treino automático e simplificado, pensado pra te dar uma direção inicial. Ele não substitui uma avaliação individual — na <strong>Consultoria Online</strong> o plano evolui com acompanhamento, ajuste de carga, execução e periodização direto comigo.</div>' +
+      '<div class="result-actions">' +
+        '<a href="' + waLink + '" target="_blank" rel="noopener" class="btn">Receber esse treino no meu WhatsApp →</a>' +
+        '<button type="button" class="btn btn-ghost" id="btnCopiar">Copiar treino</button>' +
+        '<a href="ferreira-trainning.html#planos" class="btn btn-ghost">Conhecer a Consultoria Online</a>' +
+      '</div>' +
+      '<p class="copy-feedback" id="copyFeedback" hidden>Treino copiado para a área de transferência!</p>';
+
+    quiz.hidden = true;
+    result.hidden = false;
+    result.scrollIntoView({behavior:'smooth', block:'start'});
+
+    document.getElementById('btnCopiar').addEventListener('click', ()=>{
+      const feedback = document.getElementById('copyFeedback');
+      navigator.clipboard.writeText(planTextoSimples).then(()=>{
+        feedback.hidden = false;
+      }).catch(()=>{
+        feedback.textContent = 'Não foi possível copiar automaticamente — selecione o texto manualmente.';
+        feedback.hidden = false;
+      });
+    });
+
+    salvarLeadNoSupabase({
+      nome: state.nome,
+      whatsapp: state.whatsapp,
+      objetivo: state.objetivo,
+      nivel: state.nivel,
+      local_treino: state.local,
+      dias_semana: dias,
+      treino_resumo: planTextoSimples,
+      enviado_whatsapp: false
+    });
+  }
+
+  renderStep();
+})();
+</script>
+
+</body>
+</html>

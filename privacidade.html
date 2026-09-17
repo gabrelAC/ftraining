@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Política de Privacidade | Ferreira Trainning</title>
+<meta name="description" content="Política de Privacidade da Ferreira Trainning — como coletamos, usamos e protegemos seus dados pessoais em conformidade com a LGPD.">
+<meta name="theme-color" content="#0a0a09">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://ferreiratrainning.com.br/privacidade.html">
+
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%230a0a09'/%3E%3Ctext x='50' y='70' font-family='Arial,sans-serif' font-weight='900' font-size='60' fill='%23ff4d15' text-anchor='middle'%3EF%3C/text%3E%3C/svg%3E">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Work+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    --black:#0a0a09;
+    --black-2:#141210;
+    --card:#1c1a17;
+    --line:#332e28;
+    --orange:#ff4d15;
+    --orange-2:#ff8a3d;
+    --amber:#ffb020;
+    --paper:#f4efe6;
+    --muted:#a89f92;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--black);
+    color:var(--paper);
+    font-family:'Work Sans',sans-serif;
+    line-height:1.65;
+    overflow-x:hidden;
+  }
+  h1,h2,h3{font-family:'Anton',sans-serif;font-weight:400;text-transform:uppercase;letter-spacing:0.01em;line-height:1;}
+  a{color:var(--orange-2);text-decoration:underline;}
+  a:hover{color:var(--orange);}
+  .wrap{max-width:820px;margin:0 auto;padding:0 24px;}
+
+  /* ---------- HEADER SIMPLES ---------- */
+  header{
+    border-bottom:1px solid var(--line);
+    padding:18px 0;
+    background:var(--black);
+    position:sticky;top:0;z-index:10;
+  }
+  .header-inner{
+    max-width:820px;margin:0 auto;padding:0 24px;
+    display:flex;align-items:center;justify-content:space-between;gap:16px;
+  }
+  .logo{font-family:'Anton',sans-serif;font-size:18px;text-transform:uppercase;letter-spacing:0.02em;text-decoration:none;color:var(--paper);}
+  .logo span{color:var(--orange);}
+  .back-link{
+    font-family:'JetBrains Mono',monospace;
+    font-size:12px;text-transform:uppercase;letter-spacing:0.08em;
+    color:var(--muted);text-decoration:none;
+    display:inline-flex;align-items:center;gap:8px;
+    transition:color .2s;
+  }
+  .back-link:hover{color:var(--orange-2);}
+
+  /* ---------- CONTEÚDO ---------- */
+  .doc{padding:64px 0 80px;}
+  .doc-head{margin-bottom:40px;border-bottom:1px solid var(--line);padding-bottom:32px;}
+  .eyebrow{
+    font-family:'JetBrains Mono',monospace;
+    font-size:12px;letter-spacing:0.18em;text-transform:uppercase;
+    color:var(--orange-2);
+    display:inline-flex;align-items:center;gap:10px;
+    margin-bottom:18px;
+  }
+  .eyebrow::before{content:"";width:22px;height:2px;background:var(--orange);display:inline-block;}
+  .doc-head h1{font-size:clamp(32px,5vw,52px);margin-bottom:14px;}
+  .doc-meta{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:0.06em;}
+
+  .doc h2{
+    font-family:'Work Sans',sans-serif;font-weight:700;text-transform:none;
+    font-size:20px;color:var(--paper);
+    margin:36px 0 12px;
+  }
+  .doc h2 .num{
+    font-family:'JetBrains Mono',monospace;
+    font-size:13px;color:var(--orange);margin-right:10px;
+  }
+  .doc p{color:var(--muted);font-size:16px;margin-bottom:14px;}
+  .doc ul{padding-left:22px;margin-bottom:14px;}
+  .doc li{color:var(--muted);font-size:16px;margin-bottom:8px;}
+  .doc b{color:var(--paper);font-weight:700;}
+
+  .doc .callout{
+    border-left:3px solid var(--orange);
+    background:var(--card);
+    padding:18px 22px;
+    margin:24px 0;
+    font-size:15px;
+    color:var(--muted);
+  }
+
+  .doc-foot{
+    margin-top:56px;padding-top:32px;border-top:1px solid var(--line);
+    display:flex;flex-wrap:wrap;gap:16px;justify-content:space-between;align-items:center;
+  }
+  .btn{
+    display:inline-flex;align-items:center;gap:8px;
+    background:var(--orange);color:var(--black);
+    font-weight:800;text-transform:uppercase;letter-spacing:0.03em;font-size:13px;
+    padding:13px 24px;border-radius:2px;
+    border:none;cursor:pointer;text-decoration:none;
+    transition:background .2s ease;
+  }
+  .btn:hover{background:var(--orange-2);color:var(--black);}
+  .btn-ghost{background:transparent;border:1px solid var(--line);color:var(--paper);}
+  .btn-ghost:hover{border-color:var(--orange);color:var(--orange-2);background:transparent;}
+
+  footer{
+    border-top:1px solid var(--line);
+    padding:28px 0;text-align:center;
+    font-size:12px;color:var(--muted);
+  }
+  footer a{color:var(--muted);}
+  footer a:hover{color:var(--orange-2);}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <a href="ferreira-trainning.html" class="logo">FERREIRA<span>.</span>TRAINNING</a>
+    <a href="ferreira-trainning.html" class="back-link">← Voltar ao site</a>
+  </div>
+</header>
+
+<main class="doc">
+  <div class="wrap">
+
+    <div class="doc-head">
+      <span class="eyebrow">Documento legal</span>
+      <h1>Política de Privacidade</h1>
+      <div class="doc-meta">Última atualização: setembro de 2026</div>
+    </div>
+
+    <p>Esta Política de Privacidade descreve como a <b>Ferreira Trainning</b>, consultoria de treino conduzida por Gabriel Ferreira (CREF 002536-AC), coleta, usa, armazena e protege os dados pessoais dos visitantes e alunos, em conformidade com a <b>Lei Geral de Proteção de Dados (LGPD — Lei nº 13.709/2018)</b>.</p>
+
+    <p>Ao navegar neste site ou entrar em contato conosco, você declara ter lido e compreendido esta política e concorda com as práticas aqui descritas.</p>
+
+    <h2><span class="num">01</span>Quais dados coletamos</h2>
+    <ul>
+      <li><b>Dados fornecidos por você:</b> nome, e-mail, número de WhatsApp e objetivo de treino, informados voluntariamente no formulário de contato ou no gerador de treino gratuito.</li>
+      <li><b>Dados de navegação:</b> informações anônimas de uso do site (páginas visitadas, tempo de permanência, tipo de dispositivo), coletadas por ferramentas de análise como o Google Analytics.</li>
+    </ul>
+
+    <h2><span class="num">02</span>Para que usamos seus dados</h2>
+    <ul>
+      <li>Entrar em contato para responder sua solicitação ou agendar o diagnóstico gratuito;</li>
+      <li>Enviar informações sobre planos, serviços e conteúdos da Ferreira Trainning;</li>
+      <li>Melhorar a experiência de navegação e o conteúdo do site;</li>
+      <li>Cumprir obrigações legais e regulatórias.</li>
+    </ul>
+
+    <h2><span class="num">03</span>Base legal do tratamento</h2>
+    <p>O tratamento dos seus dados é realizado com base nas seguintes hipóteses legais previstas na LGPD:</p>
+    <ul>
+      <li><b>Consentimento</b> (art. 7º, I) — ao preencher formulários e autorizar o contato;</li>
+      <li><b>Execução de contrato</b> (art. 7º, V) — quando você contrata um plano ou serviço;</li>
+      <li><b>Legítimo interesse</b> (art. 7º, IX) — para melhoria dos serviços e comunicação com alunos;</li>
+      <li><b>Cumprimento de obrigação legal</b> (art. 7º, II) — quando exigido por lei.</li>
+    </ul>
+
+    <h2><span class="num">04</span>Compartilhamento de dados</h2>
+    <p>Seus dados <b>não são vendidos nem compartilhados com terceiros</b> para fins publicitários. Podemos compartilhar informações apenas com prestadores de serviço essenciais à operação (ex.: plataformas de envio de mensagens, hospedagem e ferramentas de análise), sempre sob contrato e em conformidade com a LGPD.</p>
+
+    <h2><span class="num">05</span>Armazenamento e segurança</h2>
+    <p>Os dados são armazenados em servidores seguros e mantidos apenas pelo tempo necessário para cumprir as finalidades descritas nesta política, salvo quando a lei exigir prazo maior. Adotamos medidas técnicas e administrativas razoáveis para proteger seus dados contra acessos não autorizados, perda ou alteração.</p>
+
+    <h2><span class="num">06</span>Seus direitos (LGPD)</h2>
+    <p>Você pode, a qualquer momento, solicitar:</p>
+    <ul>
+      <li>Confirmação da existência de tratamento dos seus dados;</li>
+      <li>Acesso aos dados que temos sobre você;</li>
+      <li>Correção de dados incompletos, inexatos ou desatualizados;</li>
+      <li>Anonimização, bloqueio ou eliminação de dados desnecessários ou excessivos;</li>
+      <li>Portabilidade dos dados a outro fornecedor;</li>
+      <li>Eliminação dos dados tratados com base no consentimento;</li>
+      <li>Informação sobre entidades com as quais compartilhamos dados;</li>
+      <li>Revogação do consentimento a qualquer momento.</li>
+    </ul>
+    <p>Para exercer qualquer um desses direitos, entre em contato pelo e-mail <a href="mailto:contato@ferreiratrainning.com.br">contato@ferreiratrainning.com.br</a> ou pelo WhatsApp <a href="https://wa.me/5511912345678" target="_blank" rel="noopener">(11) 91234-5678</a>.</p>
+
+    <h2><span class="num">07</span>Cookies</h2>
+    <p>Este site pode usar cookies e tecnologias similares para melhorar sua experiência de navegação e coletar métricas anônimas de uso. Você pode, a qualquer momento, desativar os cookies nas configurações do seu navegador — isso pode afetar algumas funcionalidades do site.</p>
+
+    <h2><span class="num">08</span>Alterações nesta política</h2>
+    <p>Esta política pode ser atualizada periodicamente para refletir mudanças na legislação ou nos nossos serviços. Recomendamos revisá-la de tempos em tempos. A data da última atualização está indicada no topo deste documento.</p>
+
+    <h2><span class="num">09</span>Contato do responsável</h2>
+    <p>Em caso de dúvidas sobre esta Política de Privacidade ou sobre o tratamento dos seus dados, fale com a gente:</p>
+    <ul>
+      <li><b>Responsável:</b> Gabriel Ferreira — Ferreira Trainning</li>
+      <li><b>E-mail:</b> <a href="mailto:contato@ferreiratrainning.com.br">contato@ferreiratrainning.com.br</a></li>
+      <li><b>WhatsApp:</b> <a href="https://wa.me/5511912345678" target="_blank" rel="noopener">(11) 91234-5678</a></li>
+    </ul>
+
+    <div class="callout">
+      Este documento é um modelo base e pode ser atualizado conforme a evolução dos serviços. Recomendamos revisão jurídica para adequação completa à LGPD.
+    </div>
+
+    <div class="doc-foot">
+      <a href="ferreira-trainning.html" class="btn">← Voltar ao site</a>
+      <a href="termos.html" class="btn btn-ghost">Ver Termos de Uso →</a>
+    </div>
+
+  </div>
+</main>
+
+<footer>
+  © 2026 Ferreira Trainning. Todos os direitos reservados. · <a href="privacidade.html">Política de Privacidade</a> · <a href="termos.html">Termos de Uso</a>
+</footer>
+
+</body>
+</html>
