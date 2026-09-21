@@ -110,11 +110,41 @@
   }
   .skip-link:focus{left:16px;top:16px;}
 
+  /* ---------- TOP BAR (faixa laranja de urgência) ---------- */
+  .topbar{
+    position:fixed;top:0;left:0;right:0;z-index:110;
+    background:linear-gradient(90deg, #ff4d15, #ff8a3d);
+    color:var(--black);
+    text-align:center;
+    font-family:'JetBrains Mono',monospace;
+    font-size:12px;font-weight:700;
+    letter-spacing:0.06em;text-transform:uppercase;
+    padding:9px 16px;
+    line-height:1.2;
+  }
+  .topbar a{color:var(--black);text-decoration:underline;}
+  .topbar a:hover{opacity:0.8;}
+
+  /* ---------- BARRA DE PROGRESSO ---------- */
+  .progress-bar{
+    position:fixed;top:0;left:0;
+    height:3px;width:0%;
+    background:linear-gradient(90deg, #ff4d15, #ffb020);
+    z-index:120;
+    transition:width .1s linear;
+    pointer-events:none;
+  }
+
   header{
-    position:fixed;top:0;left:0;right:0;z-index:100;
+    position:fixed;top:37px;left:0;right:0;z-index:100;
     background:rgba(10,10,9,0.88);
     backdrop-filter:blur(8px);
     border-bottom:1px solid var(--line);
+    transition:top .3s ease;
+  }
+  @media(max-width:600px){
+    .topbar{font-size:10.5px;padding:7px 12px;}
+    header{top:31px;}
   }
   .nav{display:flex;align-items:center;justify-content:space-between;padding:16px 24px;max-width:1180px;margin:0 auto;position:relative;}
   .logo{font-family:'Anton',sans-serif;font-size:20px;text-transform:uppercase;letter-spacing:0.02em;}
@@ -156,7 +186,7 @@
 
   .hero{
     position:relative;
-    padding:150px 0 100px;
+    padding:190px 0 100px;
     background:
       radial-gradient(ellipse 60% 50% at 80% 0%, rgba(255,77,21,0.16), transparent 60%),
       var(--black);
@@ -174,11 +204,25 @@
     font-size:clamp(42px,7vw,84px);
     margin:18px 0 22px;
   }
+  /* REVERTIDO: "sustenta" apenas laranja, sem fundo nem underline */
   .hero h1 em{font-style:normal;color:var(--orange);}
+
   .hero p.lead{
-    font-size:18px;color:var(--muted);max-width:46ch;margin-bottom:32px;
+    font-size:18px;color:var(--muted);max-width:48ch;margin-bottom:32px;
   }
-  .hero-cta-row{display:flex;flex-wrap:wrap;gap:14px;margin-bottom:44px;}
+  .hero-cta-row{display:flex;flex-wrap:wrap;gap:14px;margin-bottom:44px;align-items:center;}
+  .cta-arrow{
+    display:inline-block;
+    margin-left:6px;
+    font-size:22px;
+    color:var(--orange-2);
+    animation:pointBounce 1.4s ease-in-out infinite;
+    transform-origin:center;
+  }
+  @keyframes pointBounce{
+    0%,100%{transform:translateX(0);}
+    50%{transform:translateX(6px);}
+  }
   .hero-stats{
     display:grid;grid-template-columns:repeat(3,1fr);gap:0;
     border-top:1px solid var(--line);padding-top:24px;max-width:520px;
@@ -186,6 +230,74 @@
   .hero-stats div{padding-right:16px;}
   .hero-stats .num{font-family:'JetBrains Mono',monospace;font-size:30px;font-weight:700;color:var(--orange-2);}
   .hero-stats .lbl{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:0.05em;margin-top:4px;}
+
+  .hero-right{
+    display:flex;flex-direction:column;gap:18px;
+  }
+
+  .lembrete{
+    background:linear-gradient(160deg, rgba(255,77,21,0.10), rgba(255,77,21,0.03));
+    border:1px solid rgba(255,77,21,0.35);
+    border-left:4px solid var(--orange);
+    padding:10px 16px;
+    position:relative;
+    transition:padding .3s ease;
+  }
+  .lembrete:not(.recolhido){
+    padding:22px 22px 20px;
+  }
+  .lembrete-head{
+    display:flex;align-items:center;justify-content:space-between;gap:12px;
+  }
+  .lembrete:not(.recolhido) .lembrete-head{
+    margin-bottom:12px;
+  }
+  .lembrete-tag{
+    font-family:'JetBrains Mono',monospace;
+    font-size:11px;font-weight:700;
+    color:var(--orange);
+    text-transform:uppercase;letter-spacing:0.14em;
+  }
+  .lembrete-toggle{
+    background:none;border:none;cursor:pointer;
+    font-family:'JetBrains Mono',monospace;
+    font-size:11px;font-weight:700;
+    color:var(--orange-2);
+    text-transform:uppercase;letter-spacing:0.08em;
+    padding:2px 0;
+    display:inline-flex;align-items:center;gap:6px;
+    transition:color .2s;
+  }
+  .lembrete-toggle:hover{color:var(--orange);}
+  .lembrete-toggle .arrow{
+    display:inline-block;
+    transition:transform .3s ease;
+    font-size:13px;
+  }
+  .lembrete.recolhido .lembrete-toggle .arrow{
+    transform:rotate(-90deg);
+  }
+
+  .lembrete-body{
+    overflow:hidden;
+    transition:max-height .35s ease, opacity .3s ease;
+    max-height:0;
+    opacity:0;
+  }
+  .lembrete:not(.recolhido) .lembrete-body{
+    max-height:600px;
+    opacity:1;
+  }
+
+  .lembrete h4{
+    font-family:'Work Sans',sans-serif;font-weight:700;
+    font-size:15px;text-transform:none;letter-spacing:0;
+    color:var(--paper);margin-bottom:10px;line-height:1.3;
+  }
+  .lembrete p{
+    font-size:13.5px;color:var(--muted);line-height:1.55;margin:0;
+  }
+  .lembrete p b{color:var(--orange-2);font-weight:700;}
 
   .hero-card{
     background:var(--card);border:1px solid var(--line);
@@ -238,6 +350,16 @@
     border:1px solid var(--line);padding:8px 14px;font-size:12px;
     font-family:'JetBrains Mono',monospace;text-transform:uppercase;letter-spacing:0.05em;color:var(--orange-2);
   }
+  .autoridade-badge{
+    display:inline-flex;flex-wrap:wrap;align-items:center;gap:10px;
+    margin-top:10px;margin-bottom:18px;
+    font-family:'JetBrains Mono',monospace;font-size:11px;
+    text-transform:uppercase;letter-spacing:0.08em;
+  }
+  .autoridade-badge .b-espec{
+    border:1px solid var(--orange);color:var(--orange-2);
+    padding:5px 10px;
+  }
 
   .metodo-grid{display:grid;grid-template-columns:1fr;gap:1px;background:var(--line);border:1px solid var(--line);}
   @media(min-width:700px){.metodo-grid{grid-template-columns:repeat(2,1fr);}}
@@ -253,6 +375,12 @@
   .plano{
     background:var(--card);border:1px solid var(--line);padding:34px 28px;
     display:flex;flex-direction:column;
+    transition:transform .3s ease, border-color .3s ease, box-shadow .3s ease;
+  }
+  .plano:hover{
+    transform:translateY(-6px);
+    border-color:rgba(255,77,21,0.5);
+    box-shadow:0 16px 40px rgba(0,0,0,0.45);
   }
   .plano.destaque{
     border-color:var(--orange);
@@ -260,15 +388,53 @@
     position:relative;
   }
   @media(min-width:920px){.plano.destaque{transform:translateY(-14px);}}
+  @media(min-width:920px){.plano.destaque:hover{transform:translateY(-20px);}}
   .plano-badge{
     position:absolute;top:-13px;left:28px;background:var(--orange);color:var(--black);
     font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;text-transform:uppercase;
     padding:5px 12px;letter-spacing:0.08em;
+    animation:pulseBadge 2.2s ease-in-out infinite;
+  }
+  @keyframes pulseBadge{
+    0%,100%{transform:scale(1);box-shadow:0 0 0 0 rgba(255,77,21,0.5);}
+    50%{transform:scale(1.05);box-shadow:0 0 0 8px rgba(255,77,21,0);}
+  }
+  .plano-vagas{
+    display:inline-flex;align-items:center;gap:6px;
+    background:rgba(255,176,32,0.12);
+    border:1px solid rgba(255,176,32,0.4);
+    color:var(--amber);
+    font-family:'JetBrains Mono',monospace;
+    font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;
+    padding:5px 10px;margin-bottom:14px;width:fit-content;
+  }
+  .plano-prova{
+    font-family:'JetBrains Mono',monospace;
+    font-size:11px;color:var(--orange-2);
+    text-transform:uppercase;letter-spacing:0.06em;
+    margin-bottom:14px;
+    display:flex;align-items:center;gap:8px;
+  }
+  .plano-prova::before{
+    content:"★";color:var(--orange);font-size:12px;
   }
   .plano .tier{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:0.1em;}
   .plano h3{font-size:26px;margin:10px 0 14px;text-transform:none;font-family:'Work Sans',sans-serif;font-weight:800;}
-  .plano .price{font-family:'JetBrains Mono',monospace;font-size:34px;font-weight:700;color:var(--paper);margin-bottom:14px;}
+  .plano .price{
+    font-family:'JetBrains Mono',monospace;font-size:34px;font-weight:700;
+    color:var(--paper);margin-bottom:4px;
+    display:flex;align-items:baseline;flex-wrap:wrap;gap:8px;
+  }
+  .plano .price .old{
+    font-size:16px;color:var(--muted);text-decoration:line-through;font-weight:500;
+  }
   .plano .price span{font-size:13px;color:var(--muted);font-family:'Work Sans',sans-serif;font-weight:500;text-transform:none;}
+  .plano .price-dia{
+    font-size:12px;color:var(--orange-2);
+    font-family:'JetBrains Mono',monospace;
+    text-transform:uppercase;letter-spacing:0.05em;
+    margin-bottom:18px;
+  }
   .plano p.desc{color:var(--muted);font-size:14px;margin-bottom:22px;min-height:64px;}
   .plano ul{list-style:none;margin-bottom:28px;flex-grow:1;}
   .plano li{padding:9px 0;border-top:1px solid var(--line);font-size:14px;display:flex;gap:10px;}
@@ -363,7 +529,6 @@
   .reveal{opacity:0;transform:translateY(24px);transition:opacity .6s ease, transform .6s ease;}
   .reveal.show{opacity:1;transform:translateY(0);}
 
-  /* ---------- POP-UP (Diagnóstico gratuito — gatilho: troca de aba/minimizar) ---------- */
   .popup-overlay{
     position:fixed;inset:0;z-index:500;
     background:rgba(10,10,9,0.85);
@@ -414,10 +579,23 @@
     .btn:hover{transform:none;}
     .popup{transition:none;}
     .popup-overlay{transition:none;}
+    .lembrete, .lembrete-body{transition:none;}
+    .plano{transition:none;}
+    .plano:hover{transform:none;}
+    .plano-badge{animation:none;}
+    .cta-arrow{animation:none;}
   }
 </style>
 </head>
 <body>
+
+<!-- BARRA DE PROGRESSO -->
+<div class="progress-bar" id="progress-bar"></div>
+
+<!-- TOP BAR — faixa laranja de urgência -->
+<div class="topbar">
+  Apenas 5 vagas para novos alunos este mês. <a href="https://wa.me/5511912345678?text=Ol%C3%A1%2C%20quero%20garantir%20minha%20vaga!">Garanta a sua →</a>
+</div>
 
 <a class="skip-link" href="#top">Pular para o conteúdo</a>
 
@@ -448,8 +626,8 @@
         <p class="lead">Ferreira Trainning é a consultoria do treinador Gabriel Ferreira, especialista em exercícios para grupos especiais e na busca real por qualidade de vida. Aqui, o treino é construído para o seu corpo, com a sua história e as suas limitações — não para um padrão que não te representa.
 Avaliação presencial + acompanhamento online.</p>
         <div class="hero-cta-row">
-          <a href="https://wa.me/5511912345678?text=Ol%C3%A1%2C%20quero%20come%C3%A7ar%20minha%20consultoria!" class="btn" target="_blank" rel="noopener">Quero minha consultoria →</a>
-          <a href="#planos" class="btn btn-ghost">Ver planos</a>
+          <a href="https://wa.me/5511912345678?text=Ol%C3%A1%2C%20quero%20meu%20diagn%C3%B3stico%20gratuito!" class="btn" target="_blank" rel="noopener">Quero meu diagnóstico gratuito <span class="cta-arrow">→</span></a>
+          <a href="#planos" class="btn btn-ghost">Ver planos e preços</a>
         </div>
         <div class="hero-stats">
           <div><div class="num">150+</div><div class="lbl">Pessoas acompanhadas</div></div>
@@ -458,19 +636,36 @@ Avaliação presencial + acompanhamento online.</p>
         </div>
       </div>
 
-      <div class="hero-card">
-        <span class="tag">Diagnóstico gratuito</span>
-        <h3>Antes de treinar, um plano.</h3>
-        <p>Em 15 minutos de conversa, mapeamos seu histórico, sua rotina e o que já travou seus resultados até aqui.</p>
-        <ul class="checklist">
-          <li>Avaliação do seu objetivo real</li>
-          <li>Plano sob medida para o seu corpo e rotina</li>
-          <li>Sem compromisso de compra</li>
-        </ul>
-        <p class="mono" style="font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:0.06em;margin-top:20px;margin-bottom:10px;">Prefere começar por:</p>
-        <div class="hero-card-actions">
-          <a href="https://wa.me/5511912345678?text=Ol%C3%A1%2C%20quero%20come%C3%A7ar%20meu%20diagn%C3%B3stico%20gratuito!" class="btn" target="_blank" rel="noopener">WhatsApp →</a>
-          <a href="https://instagram.com/ferreiratrainning" class="btn btn-ghost" target="_blank" rel="noopener">Instagram →</a>
+      <!-- COLUNA DIREITA: lembrete "Para quem é" (FECHADO compacto) + card diagnóstico -->
+      <div class="hero-right">
+        <div class="lembrete recolhido" id="lembrete">
+          <div class="lembrete-head">
+            <span class="lembrete-tag">Para quem é</span>
+            <button class="lembrete-toggle" id="lembrete-toggle" aria-expanded="false" aria-controls="lembrete-body">
+              <span class="toggle-label">Ler mais</span>
+              <span class="arrow">▾</span>
+            </button>
+          </div>
+          <div class="lembrete-body" id="lembrete-body">
+            <h4>Foi feito para quem tem uma condição que exige cuidado.</h4>
+            <p>Pessoas com <b>diabetes, hipertensão, cardiopatia, dor crônica, histórico de lesão, artrite, fibromialgia, obesidade, sedentarismo, pós-cirúrgico, gestantes ou idosos</b> — e também para quem simplesmente quer <b>saúde sem se machucar</b>.</p>
+          </div>
+        </div>
+
+        <div class="hero-card">
+          <span class="tag">Diagnóstico gratuito</span>
+          <h3>Antes de treinar, um plano.</h3>
+          <p>Em 15 minutos de conversa, mapeamos seu histórico, sua rotina e o que já travou seus resultados até aqui.</p>
+          <ul class="checklist">
+            <li>Avaliação do seu objetivo real</li>
+            <li>Plano sob medida para o seu corpo e rotina</li>
+            <li>Sem compromisso de compra</li>
+          </ul>
+          <p class="mono" style="font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:0.06em;margin-top:20px;margin-bottom:10px;">Prefere começar por:</p>
+          <div class="hero-card-actions">
+            <a href="https://wa.me/5511912345678?text=Ol%C3%A1%2C%20quero%20come%C3%A7ar%20meu%20diagn%C3%B3stico%20gratuito!" class="btn" target="_blank" rel="noopener">WhatsApp →</a>
+            <a href="https://instagram.com/ferreiratrainning" class="btn btn-ghost" target="_blank" rel="noopener">Instagram →</a>
+          </div>
         </div>
       </div>
     </div>
@@ -510,7 +705,10 @@ Avaliação presencial + acompanhamento online.</p>
       <div class="sobre-copy reveal">
         <span class="eyebrow">Quem treina você</span>
         <h2 style="margin-top:14px;font-size:clamp(28px,4vw,42px);">Gabriel Ferreira</h2>
-        <p>Profissional de Educação Física (CREF 002536-AC) especializado em exercícios para grupos especiais e na busca real por qualidade de vida.</p>
+        <div class="autoridade-badge">
+          <span class="b-espec">Especialista em Grupos Especiais</span>
+        </div>
+        <p>Profissional de Educação Física especializado em exercícios para grupos especiais e na busca real por qualidade de vida.</p>
         <p>A maioria das consultorias foca no padrão estético e esquece que cada corpo tem uma história, uma limitação e um ritmo. Aqui é diferente: o treino é construído para quem quer saúde que dura, não para quem quer se encaixar em um molde.</p>
         <p>Treino online com acompanhamento próximo + avaliação presencial para entender o seu ponto de partida de verdade.</p>
         <p style="color:var(--orange-2);font-weight:700;">Ferreira Trainning — menos padrão, mais saúde real.</p>
@@ -566,10 +764,15 @@ Avaliação presencial + acompanhamento online.</p>
       </div>
       <div class="planos-grid">
 
+        <!-- PLANO 1 — TREINO DIGITAL -->
         <div class="plano alt reveal">
           <span class="tier">Ponto de partida</span>
           <h3>Treino Digital</h3>
-          <div class="price">R$ 197<span> /mês</span></div>
+          <div class="price">
+            <span class="old">R$ 297</span>
+            R$ 197<span> /mês</span>
+          </div>
+          <div class="price-dia">≈ R$ 6,50 por dia</div>
           <p class="desc">Programa de treino estruturado pra quem quer sair do zero com direção certa, no seu ritmo.</p>
           <ul>
             <li>Programa de treino pronto por objetivo</li>
@@ -580,11 +783,18 @@ Avaliação presencial + acompanhamento online.</p>
           <a href="https://wa.me/5511912345678?text=Ol%C3%A1%2C%20quero%20come%C3%A7ar%20o%20plano%20Treino%20Digital!" class="btn" target="_blank" rel="noopener">Quero começar</a>
         </div>
 
+        <!-- PLANO 2 — CONSULTORIA ONLINE (DESTAQUE) -->
         <div class="plano destaque reveal">
           <span class="plano-badge">Mais procurado</span>
+          <div class="plano-vagas">3 vagas restantes este mês</div>
           <span class="tier">Acompanhamento completo</span>
           <h3>Consultoria Online</h3>
-          <div class="price">R$ 397<span> /mês</span></div>
+          <div class="plano-prova">Mais escolhido por alunos com dor crônica</div>
+          <div class="price">
+            <span class="old">R$ 597</span>
+            R$ 397<span> /mês</span>
+          </div>
+          <div class="price-dia">≈ R$ 13,23 por dia</div>
           <p class="desc">Treino 100% individualizado com acompanhamento direto comigo — o formato pra quem quer resultado sério e sustentável.</p>
           <ul>
             <li>Anamnese e diagnóstico completo</li>
@@ -596,10 +806,15 @@ Avaliação presencial + acompanhamento online.</p>
           <a href="https://wa.me/5511912345678?text=Ol%C3%A1%2C%20quero%20a%20Consultoria%20Online!" class="btn" target="_blank" rel="noopener">Quero essa consultoria</a>
         </div>
 
+        <!-- PLANO 3 — AVALIAÇÃO PRESENCIAL -->
         <div class="plano alt reveal">
           <span class="tier">Presencial</span>
           <h3>Avaliação Presencial</h3>
-          <div class="price">R$ 150<span> pagamento único</span></div>
+          <div class="price">
+            <span class="old">R$ 250</span>
+            R$ 150<span> investimento único</span>
+          </div>
+          <div class="price-dia">Sem mensalidade · investimento único</div>
           <p class="desc">Avaliação física presencial completa — ideal pra quem está na região e quer o diagnóstico mais aprofundado, cara a cara.</p>
           <ul>
             <li>Avaliação física presencial completa</li>
@@ -840,9 +1055,35 @@ Avaliação presencial + acompanhamento online.</p>
     });
   });
 
+  // ---------- BARRA DE PROGRESSO ----------
+  (function(){
+    const bar = document.getElementById('progress-bar');
+    function update(){
+      const h = document.documentElement;
+      const scrollTop = h.scrollTop || document.body.scrollTop;
+      const scrollHeight = (h.scrollHeight || document.body.scrollHeight) - h.clientHeight;
+      const pct = scrollHeight > 0 ? (scrollTop / scrollHeight) * 100 : 0;
+      bar.style.width = pct + '%';
+    }
+    window.addEventListener('scroll', update, { passive:true });
+    window.addEventListener('resize', update);
+    update();
+  })();
+
+  // ---------- LEMBRETE "Para quem é" — toggle abrir/fechar ----------
+  (function(){
+    const lembrete = document.getElementById('lembrete');
+    const toggle = document.getElementById('lembrete-toggle');
+    const label = toggle.querySelector('.toggle-label');
+
+    toggle.addEventListener('click', ()=>{
+      const recolhido = lembrete.classList.toggle('recolhido');
+      toggle.setAttribute('aria-expanded', recolhido ? 'false' : 'true');
+      label.textContent = recolhido ? 'Ler mais' : 'Ler menos';
+    });
+  })();
+
   // ---------- POP-UP: Diagnóstico gratuito ----------
-  // Gatilhos: troca de aba/minimizar (visibilitychange) OU perda de foco (blur).
-  // Não aparece no carregamento nem por tempo. 1x por sessão.
   (function(){
     const overlay = document.getElementById('popup-overlay');
     const closeBtn = document.getElementById('popup-close');
@@ -851,13 +1092,10 @@ Avaliação presencial + acompanhamento online.</p>
     let jaMostrou = false;
     let jaInteragiu = false;
 
-    // Se já viu nesta sessão, não mostra
     try {
       if (sessionStorage.getItem(STORAGE_KEY) === '1') return;
     } catch(e){}
 
-    // Só ativa o gatilho depois que o usuário interagiu com a página
-    // (evita disparar em carregamentos automáticos/robôs)
     ['click','scroll','keydown','touchstart'].forEach(evt=>{
       window.addEventListener(evt, ()=>{ jaInteragiu = true; }, { once:true, passive:true });
     });
@@ -875,32 +1113,26 @@ Avaliação presencial + acompanhamento online.</p>
       setTimeout(()=>{ overlay.hidden = true; }, 300);
     }
 
-    // Gatilho 1: troca de aba / minimizar (visibilitychange)
     document.addEventListener('visibilitychange', ()=>{
       if (document.visibilityState === 'hidden') {
         abrir();
       }
     });
 
-    // Gatilho 2 (fallback): janela perde o foco (minimizar, clicar em outro app)
     window.addEventListener('blur', ()=>{
       abrir();
     });
 
-    // Fechar: botão X
     closeBtn.addEventListener('click', fechar);
 
-    // Fechar: clique fora do popup
     overlay.addEventListener('click', (e)=>{
       if (e.target === overlay) fechar();
     });
 
-    // Fechar: tecla ESC
     document.addEventListener('keydown', (e)=>{
       if (e.key === 'Escape' && !overlay.hidden) fechar();
     });
 
-    // Se clicar no CTA, fecha o popup (o link já abre o WhatsApp)
     cta.addEventListener('click', fechar);
   })();
 </script>
