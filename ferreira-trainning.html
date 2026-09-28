@@ -442,6 +442,19 @@
   .plano .btn{width:100%;justify-content:center;}
   .plano.alt .btn{background:transparent;border:1px solid var(--orange);color:var(--orange-2);}
   .plano.alt .btn:hover{background:var(--orange);color:var(--black);}
+  .plano.bloqueado{position:relative;overflow:hidden;}
+  .plano.bloqueado > *:not(.plano-lock){opacity:0.35;filter:grayscale(0.5);pointer-events:none;}
+  .plano-lock{
+    position:absolute;inset:0;z-index:5;
+    display:flex;align-items:center;justify-content:center;
+    background:rgba(10,10,9,0.55);backdrop-filter:blur(2px);
+  }
+  .plano-lock span{
+    font-family:'Anton',sans-serif;font-size:20px;text-transform:uppercase;
+    letter-spacing:0.05em;color:var(--paper);
+    border:1px solid var(--orange);background:var(--black);
+    padding:10px 22px;
+  }
   .planos-note{margin-top:40px;text-align:center;}
   .planos-note .scarcity{justify-content:center;color:var(--amber);}
   .planos-note .scarcity::before{background:var(--amber);}
@@ -692,7 +705,85 @@ Avaliação presencial + acompanhamento online.</p>
       </div>
     </div>
   </section>
+<!-- ===== FAIXA MARQUEE FERREIRA TRAINNING ===== -->
+<div class="ft-marquee" aria-label="Valores Ferreira Trainning">
+  <div class="ft-track">
+    <div class="ft-group">
+      <span>Consultoria de treino</span><i></i>
+      <span>Avaliação física</span><i></i>
+      <span>Treino com método</span><i></i>
+      <span>Disciplina</span><i></i>
+      <span>Constância</span><i></i>
+      <span>Evolução</span><i></i>
+      <span>Seu ritmo</span><i></i>
+      <span>Com segurança</span><i></i>
+      <span>Resultado real</span><i></i>
+      <span>Seu próximo nível</span><i></i>
+    </div>
+    <div class="ft-group" aria-hidden="true">
+      <span>Consultoria de treino</span><i></i>
+      <span>Avaliação física</span><i></i>
+      <span>Treino com método</span><i></i>
+      <span>Disciplina</span><i></i>
+      <span>Constância</span><i></i>
+      <span>Evolução</span><i></i>
+      <span>Seu ritmo</span><i></i>
+      <span>Com segurança</span><i></i>
+      <span>Resultado real</span><i></i>
+      <span>Seu próximo nível</span><i></i>
+    </div>
+  </div>
+</div>
 
+<style>
+  .ft-marquee{
+    --ft-laranja:#ff4d15;
+    --ft-preto:#0a0a09;
+    --ft-velocidade:40s;          /* maior = mais lento */
+    background:var(--ft-preto);
+    color:#fff;
+    border-top:1px solid var(--ft-laranja);
+    border-bottom:1px solid var(--ft-laranja);
+    overflow:hidden;
+    padding:8px 0;
+  }
+  .ft-track{
+    display:flex;
+    width:max-content;
+    animation:ft-rolar var(--ft-velocidade) linear infinite;
+  }
+  .ft-group{
+    display:flex;
+    align-items:center;
+    flex-shrink:0;
+  }
+  .ft-group span{
+    font-family:'Anton',Impact,'Arial Narrow',sans-serif;
+    font-size:clamp(.75rem,1.6vw,1.3rem);
+    text-transform:uppercase;
+    letter-spacing:.03em;
+    line-height:1;
+    white-space:nowrap;
+    padding:0 1rem;
+  }
+  .ft-group i{
+    width:.4rem; height:.4rem;
+    border-radius:50%;
+    background:var(--ft-laranja);
+    flex-shrink:0;
+  }
+  @keyframes ft-rolar{
+    from{ transform:translateX(0); }
+    to  { transform:translateX(-50%); }
+  }
+  @media (max-width:600px){
+    .ft-marquee{ padding:6px 0; --ft-velocidade:32s; }
+  }
+  @media (prefers-reduced-motion:reduce){
+    .ft-track{ animation:none; }
+  }
+</style>
+<!-- ===== FIM FAIXA MARQUEE ===== -->
   <!-- SOBRE -->
   <section class="sobre">
     <div class="wrap sobre-grid">
@@ -769,10 +860,10 @@ Avaliação presencial + acompanhamento online.</p>
           <span class="tier">Ponto de partida</span>
           <h3>Treino Digital</h3>
           <div class="price">
-            <span class="old">R$ 297</span>
-            R$ 197<span> /mês</span>
+            <span class="old">R$ 197</span>
+            R$ 147<span> /mês</span>
           </div>
-          <div class="price-dia">≈ R$ 6,50 por dia</div>
+          <div class="price-dia">≈ R$ 4,90 por dia</div>
           <p class="desc">Programa de treino estruturado pra quem quer sair do zero com direção certa, no seu ritmo.</p>
           <ul>
             <li>Programa de treino pronto por objetivo</li>
@@ -780,21 +871,21 @@ Avaliação presencial + acompanhamento online.</p>
             <li>Atualização periódica do plano</li>
             <li>Suporte por mensagem</li>
           </ul>
-          <a href="https://wa.me/5511912345678?text=Ol%C3%A1%2C%20quero%20come%C3%A7ar%20o%20plano%20Treino%20Digital!" class="btn" target="_blank" rel="noopener">Quero começar</a>
+          <a href="treino-digital.html" class="btn">Quero começar</a>
         </div>
 
         <!-- PLANO 2 — CONSULTORIA ONLINE (DESTAQUE) -->
         <div class="plano destaque reveal">
           <span class="plano-badge">Mais procurado</span>
-          <div class="plano-vagas">3 vagas restantes este mês</div>
+          <div class="plano-vagas">5 vagas restantes este mês</div>
           <span class="tier">Acompanhamento completo</span>
           <h3>Consultoria Online</h3>
           <div class="plano-prova">Mais escolhido por alunos com dor crônica</div>
           <div class="price">
-            <span class="old">R$ 597</span>
-            R$ 397<span> /mês</span>
+            <span class="old">R$ 357</span>
+            R$ 247<span> /mês</span>
           </div>
-          <div class="price-dia">≈ R$ 13,23 por dia</div>
+          <div class="price-dia">≈ R$ 8,23 por dia</div>
           <p class="desc">Treino 100% individualizado com acompanhamento direto comigo — o formato pra quem quer resultado sério e sustentável.</p>
           <ul>
             <li>Anamnese e diagnóstico completo</li>
@@ -803,16 +894,17 @@ Avaliação presencial + acompanhamento online.</p>
             <li>Ajustes de carga e execução contínuos</li>
             <li>Reavaliações periódicas</li>
           </ul>
-          <a href="https://wa.me/5511912345678?text=Ol%C3%A1%2C%20quero%20a%20Consultoria%20Online!" class="btn" target="_blank" rel="noopener">Quero essa consultoria</a>
+          <a href="https://wa.me/5568984020529?text=Ol%C3%A1%2C%20quero%20a%20Consultoria%20Online!" class="btn" target="_blank" rel="noopener">Quero essa consultoria</a>
         </div>
 
-        <!-- PLANO 3 — AVALIAÇÃO PRESENCIAL -->
-        <div class="plano alt reveal">
+        <!-- PLANO 3 — AVALIAÇÃO PRESENCIAL (bloqueado: em breve) -->
+        <div class="plano alt reveal bloqueado">
+          <div class="plano-lock"><span>Em breve</span></div>
           <span class="tier">Presencial</span>
           <h3>Avaliação Presencial</h3>
           <div class="price">
-            <span class="old">R$ 250</span>
-            R$ 150<span> investimento único</span>
+            <span class="old">R$ 550</span>
+            R$ 300<span> investimento único</span>
           </div>
           <div class="price-dia">Sem mensalidade · investimento único</div>
           <p class="desc">Avaliação física presencial completa — ideal pra quem está na região e quer o diagnóstico mais aprofundado, cara a cara.</p>
@@ -822,7 +914,7 @@ Avaliação presencial + acompanhamento online.</p>
             <li>Orientação de treino personalizada</li>
             <li>Relatório de resultados</li>
           </ul>
-          <a href="https://wa.me/5511912345678?text=Ol%C3%A1%2C%20quero%20agendar%20a%20avalia%C3%A7%C3%A3o%20presencial!" class="btn" target="_blank" rel="noopener">Agendar avaliação</a>
+          <a href="https://wa.me/5511912345678?text=Ol%C3%A1%2C%20quero%20agendar%20a%20avalia%C3%A7%C3%A3o%20presencial!" class="btn" target="_blank" rel="noopener" tabindex="-1" aria-disabled="true">Agendar avaliação</a>
         </div>
 
       </div>

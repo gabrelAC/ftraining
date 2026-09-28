@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Treino Digital | Ferreira Trainning</title>
+<meta name="description" content="Escolha o nível de personalização do seu treino digital — Base ou Individual — preencha a anamnese e fale direto com o treinador para liberar sua ficha.">
+<meta name="theme-color" content="#0a0a09">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://ferreiratrainning.com.br/treino-digital.html">
+
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%230a0a09'/%3E%3Ctext x='50' y='70' font-family='Arial,sans-serif' font-weight='900' font-size='60' fill='%23ff4d15' text-anchor='middle'%3EF%3C/text%3E%3C/svg%3E">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Work+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    --black:#0a0a09;
+    --black-2:#141210;
+    --card:#1c1a17;
+    --line:#332e28;
+    --orange:#ff4d15;
+    --orange-2:#ff8a3d;
+    --amber:#ffb020;
+    --paper:#f4efe6;
+    --muted:#a89f92;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--black);color:var(--paper);
+    font-family:'Work Sans',sans-serif;line-height:1.5;
+  }
+  h1,h2,h3{
+    font-family:'Anton',sans-serif;font-weight:400;text-transform:uppercase;
+    letter-spacing:0.01em;line-height:1;
+  }
+  .mono{font-family:'JetBrains Mono',monospace;}
+  a{color:inherit;text-decoration:none;}
+  .wrap{max-width:900px;margin:0 auto;padding:0 24px;}
+  :focus-visible{outline:2px solid var(--amber);outline-offset:3px;}
+
+  .eyebrow{
+    font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:0.18em;
+    text-transform:uppercase;color:var(--orange-2);display:flex;align-items:center;gap:10px;
+  }
+  .eyebrow::before{content:"";width:22px;height:2px;background:var(--orange);display:inline-block;}
+
+  header{border-bottom:1px solid var(--line);padding:20px 0;}
+  .nav{display:flex;align-items:center;justify-content:space-between;max-width:900px;margin:0 auto;padding:0 24px;}
+  .logo{font-family:'Anton',sans-serif;font-size:20px;text-transform:uppercase;}
+  .logo span{color:var(--orange);}
+  .voltar{font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:0.04em;opacity:0.8;}
+  .voltar:hover{opacity:1;color:var(--orange-2);}
+
+  main{padding:64px 0 96px;}
+  .section-head{max-width:640px;margin-bottom:44px;}
+  .section-head h1{font-size:clamp(30px,5vw,46px);margin-top:14px;}
+  .section-head p{color:var(--muted);margin-top:14px;font-size:16px;}
+
+  .btn{
+    display:inline-flex;align-items:center;justify-content:center;gap:8px;
+    background:var(--orange);color:var(--black);
+    font-weight:800;text-transform:uppercase;letter-spacing:0.03em;font-size:13px;
+    padding:13px 24px;border-radius:2px;border:none;cursor:pointer;
+    transition:transform .15s ease, background .2s ease;
+  }
+  .btn:hover{background:var(--orange-2);transform:translateY(-2px);}
+  .checklist{list-style:none;font-size:14px;}
+  .checklist li{padding:6px 0;border-top:1px solid var(--line);display:flex;gap:10px;}
+  .checklist li::before{content:"→";color:var(--orange);}
+
+  /* ---------- SELEÇÃO DE PLANO ---------- */
+  .plan-picker{display:grid;grid-template-columns:1fr;gap:24px;margin-bottom:8px;}
+  @media(min-width:760px){.plan-picker{grid-template-columns:1fr 1fr;}}
+  .plan-card{
+    text-align:left;background:var(--card);border:1px solid var(--line);
+    padding:28px 26px;cursor:pointer;color:var(--paper);
+    display:flex;flex-direction:column;gap:4px;position:relative;width:100%;
+    font-family:inherit;
+    transition:border-color .2s ease, transform .2s ease;
+  }
+  .plan-card:hover{border-color:var(--orange-2);transform:translateY(-4px);}
+  .plan-card.destaque{border-color:var(--orange);background:linear-gradient(180deg, rgba(255,77,21,0.08), var(--card) 30%);}
+  .plan-card.selecionado{border-color:var(--orange);box-shadow:0 0 0 2px rgba(255,77,21,0.3);}
+  .plan-badge{
+    position:absolute;top:-13px;left:26px;background:var(--orange);color:var(--black);
+    font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;text-transform:uppercase;
+    padding:5px 12px;letter-spacing:0.08em;
+  }
+  .plan-tier{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:0.1em;}
+  .plan-price{font-family:'JetBrains Mono',monospace;font-size:32px;font-weight:700;color:var(--paper);margin:6px 0 12px;}
+  .plan-desc{color:var(--muted);font-size:14px;margin-bottom:16px;}
+  .plan-card .checklist{margin-bottom:20px;}
+  .plan-cta{
+    margin-top:auto;font-weight:800;text-transform:uppercase;letter-spacing:0.03em;font-size:13px;
+    color:var(--orange-2);
+  }
+
+  /* ---------- ANAMNESE ---------- */
+  .anamnese{margin-top:56px;border-top:1px solid var(--line);padding-top:48px;}
+  .anamnese-head{margin-bottom:32px;}
+  .anamnese-head h2{
+    font-size:clamp(22px,3.4vw,30px);margin-top:10px;
+    text-transform:none;font-family:'Work Sans',sans-serif;font-weight:800;
+  }
+  .troca-plano{
+    background:none;border:none;color:var(--muted);text-decoration:underline;
+    font-size:13px;cursor:pointer;margin-top:10px;padding:0;
+  }
+  .troca-plano:hover{color:var(--orange-2);}
+
+  fieldset{border:none;margin-bottom:40px;padding:0;}
+  fieldset legend{
+    font-family:'Work Sans',sans-serif;font-weight:800;font-size:16px;
+    color:var(--paper);margin-bottom:18px;padding:0;display:flex;align-items:center;gap:10px;
+  }
+  legend .num{font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--orange);}
+
+  .form-field{display:flex;flex-direction:column;gap:6px;margin-bottom:18px;}
+  .form-field > label{
+    font-family:'JetBrains Mono',monospace;font-size:11px;text-transform:uppercase;
+    letter-spacing:0.08em;color:var(--muted);
+  }
+  .form-field input[type="text"],.form-field input[type="number"],
+  .form-field select,.form-field textarea{
+    background:var(--black-2);border:1px solid var(--line);color:var(--paper);
+    padding:12px 14px;font-family:'Work Sans',sans-serif;font-size:14px;border-radius:2px;
+  }
+  .form-field input:focus,.form-field select:focus,.form-field textarea:focus{outline:none;border-color:var(--orange);}
+  .form-field textarea{resize:vertical;min-height:80px;}
+  .form-grid-2{display:grid;grid-template-columns:1fr;gap:18px;}
+  @media(min-width:640px){.form-grid-2{grid-template-columns:1fr 1fr;}}
+
+  .radio-row{display:flex;flex-wrap:wrap;gap:16px;}
+  .radio-row.col{flex-direction:column;gap:10px;}
+  .check-row{display:flex;flex-wrap:wrap;gap:12px 20px;}
+  .radio-opt,.check-opt{
+    display:flex;align-items:center;gap:8px;font-size:14px;color:var(--paper);cursor:pointer;
+  }
+  .radio-opt input,.check-opt input{accent-color:var(--orange);width:16px;height:16px;flex-shrink:0;}
+  #a-restricao-qual{display:none;margin-top:8px;}
+
+  .form-note{font-size:12px;color:var(--muted);max-width:56ch;margin-top:12px;}
+
+  footer{
+    border-top:1px solid var(--line);padding:28px 0;text-align:center;
+    font-size:12px;color:var(--muted);
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="nav">
+    <a href="ferreira-trainning.html" class="logo">FERREIRA<span>.</span>TRAINNING</a>
+    <a href="ferreira-trainning.html" class="voltar">← Voltar para o site</a>
+  </div>
+</header>
+
+<main>
+  <div class="wrap">
+
+    <div class="section-head">
+      <span class="eyebrow">Treino Digital</span>
+      <h1>O método Ferreira Trainning direto no seu celular.</h1>
+      <p>Escolha o nível de personalização do seu treino e comece hoje.</p>
+    </div>
+
+    <!-- SELEÇÃO DE PLANO -->
+    <div class="plan-picker" id="plan-picker">
+      <button type="button" class="plan-card" data-plano="base" data-rotulo="Treino Base de R$ 100">
+        <span class="plan-tier">Ponto de partida</span>
+        <h3 style="font-size:22px;text-transform:none;font-family:'Work Sans',sans-serif;font-weight:800;margin-top:8px;">Treino Base</h3>
+        <span class="plan-price">R$ 100</span>
+        <p class="plan-desc">Ficha validada por objetivo — emagrecimento, hipertrofia feminina ou masculina. Treino pronto, sem adaptação individual de exercícios.</p>
+        <ul class="checklist">
+          <li>Treino pronto por objetivo</li>
+          <li>Sem adaptação de exercícios</li>
+          <li>Ideal pra quem quer começar já</li>
+        </ul>
+        <span class="plan-cta">Quero o Base →</span>
+      </button>
+
+      <button type="button" class="plan-card destaque" data-plano="individual" data-rotulo="Treino Individual de R$ 150">
+        <span class="plan-badge">Maior personalização</span>
+        <span class="plan-tier">Acompanhamento sob medida</span>
+        <h3 style="font-size:22px;text-transform:none;font-family:'Work Sans',sans-serif;font-weight:800;margin-top:8px;">Treino Individual</h3>
+        <span class="plan-price">R$ 150</span>
+        <p class="plan-desc">Ficha montada peça por peça depois da sua anamnese — adaptando lesões, limitações de tempo e os aparelhos que você realmente tem.</p>
+        <ul class="checklist">
+          <li>Adaptado às suas limitações</li>
+          <li>Considera seu tempo e equipamento</li>
+          <li>Montado exercício por exercício pra você</li>
+        </ul>
+        <span class="plan-cta">Quero Individual →</span>
+      </button>
+    </div>
+
+    <!-- ANAMNESE (revelada após a escolha do plano) -->
+    <form class="anamnese" id="anamnese" hidden>
+      <div class="anamnese-head">
+        <span class="eyebrow">Anamnese</span>
+        <h2 id="plano-escolhido-label">Você escolheu: —</h2>
+        <button type="button" class="troca-plano" id="troca-plano">← Trocar plano</button>
+      </div>
+
+      <fieldset>
+        <legend><span class="num">01</span>Dados básicos e biometria</legend>
+        <div class="form-grid-2">
+          <div class="form-field">
+            <label for="a-nome">Nome completo</label>
+            <input type="text" id="a-nome" required>
+          </div>
+          <div class="form-field">
+            <label for="a-idade">Idade</label>
+            <input type="number" id="a-idade" min="1" required>
+          </div>
+        </div>
+        <div class="form-grid-2">
+          <div class="form-field">
+            <label for="a-peso">Peso atual (kg)</label>
+            <input type="number" id="a-peso" min="1" step="0.1" required>
+          </div>
+          <div class="form-field">
+            <label for="a-altura">Altura (cm)</label>
+            <input type="number" id="a-altura" min="1" required>
+          </div>
+        </div>
+        <div class="form-field">
+          <label for="a-profissao">Profissão</label>
+          <input type="text" id="a-profissao">
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend><span class="num">02</span>Histórico clínico e limitações</legend>
+        <div class="form-field">
+          <label>Possui alguma restrição médica para a prática de exercícios?</label>
+          <div class="radio-row">
+            <label class="radio-opt"><input type="radio" name="restricao" value="nao" checked>Não</label>
+            <label class="radio-opt"><input type="radio" name="restricao" value="sim">Sim</label>
+          </div>
+          <input type="text" id="a-restricao-qual" placeholder="Se sim, qual?">
+        </div>
+        <div class="form-field">
+          <label>Sente dores articulares com frequência?</label>
+          <div class="check-row">
+            <label class="check-opt"><input type="checkbox" name="dor" value="Joelhos">Joelhos</label>
+            <label class="check-opt"><input type="checkbox" name="dor" value="Ombros">Ombros</label>
+            <label class="check-opt"><input type="checkbox" name="dor" value="Lombar">Lombar</label>
+            <label class="check-opt"><input type="checkbox" name="dor" value="Quadril">Quadril</label>
+            <label class="check-opt"><input type="checkbox" name="dor" value="Outras">Outras</label>
+            <label class="check-opt"><input type="checkbox" name="dor" value="Nenhuma">Nenhuma</label>
+          </div>
+        </div>
+        <div class="form-field">
+          <label for="a-cirurgia">Já passou por alguma cirurgia ortopédica? (qual e quando)</label>
+          <input type="text" id="a-cirurgia">
+        </div>
+        <div class="form-field">
+          <label for="a-medicamento">Faz uso de algum medicamento controlado? (ex: hipertensão, diabetes)</label>
+          <input type="text" id="a-medicamento">
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend><span class="num">03</span>Rotina e estrutura</legend>
+        <div class="form-field">
+          <label>Qual o seu nível atual de treino?</label>
+          <div class="radio-row col">
+            <label class="radio-opt"><input type="radio" name="nivel" value="Sedentário" required>Sedentário (não treino há mais de 3 meses)</label>
+            <label class="radio-opt"><input type="radio" name="nivel" value="Iniciante">Iniciante (1 a 3 meses, sem constância)</label>
+            <label class="radio-opt"><input type="radio" name="nivel" value="Intermediário/Avançado">Intermediário/Avançado (mais de 6 meses direto)</label>
+          </div>
+        </div>
+        <div class="form-field">
+          <label>Onde você vai treinar?</label>
+          <div class="radio-row col">
+            <label class="radio-opt"><input type="radio" name="local" value="Academia comercial completa" required>Academia comercial completa</label>
+            <label class="radio-opt"><input type="radio" name="local" value="Academia de condomínio">Academia de condomínio (aparelhos limitados)</label>
+            <label class="radio-opt"><input type="radio" name="local" value="Em casa">Em casa (com/sem equipamentos)</label>
+          </div>
+        </div>
+        <div class="form-grid-2">
+          <div class="form-field">
+            <label for="a-dias">Dias por semana que você realmente se compromete a treinar</label>
+            <select id="a-dias" required>
+              <option value="">Selecione</option>
+              <option value="2">2 dias</option>
+              <option value="3">3 dias</option>
+              <option value="4">4 dias</option>
+              <option value="5">5 dias</option>
+              <option value="6">6 dias</option>
+            </select>
+          </div>
+          <div class="form-field">
+            <label>Tempo disponível por sessão</label>
+            <div class="radio-row">
+              <label class="radio-opt"><input type="radio" name="tempo" value="30–45 min" required>30–45 min</label>
+              <label class="radio-opt"><input type="radio" name="tempo" value="45–60 min">45–60 min</label>
+              <label class="radio-opt"><input type="radio" name="tempo" value="+1h">+1h</label>
+            </div>
+          </div>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend><span class="num">04</span>Objetivo</legend>
+        <div class="form-field">
+          <label>Qual o seu foco principal nas próximas 8 semanas?</label>
+          <div class="radio-row col">
+            <label class="radio-opt"><input type="radio" name="foco" value="Redução de percentual de gordura" required>Redução de percentual de gordura</label>
+            <label class="radio-opt"><input type="radio" name="foco" value="Ganho de massa muscular (hipertrofia)">Ganho de massa muscular (hipertrofia)</label>
+            <label class="radio-opt"><input type="radio" name="foco" value="Condicionamento e saúde geral">Condicionamento e saúde geral</label>
+          </div>
+        </div>
+        <div class="form-field">
+          <label for="a-detesta">Existe algum exercício que você detesta fazer ou não sente confiança?</label>
+          <textarea id="a-detesta"></textarea>
+        </div>
+      </fieldset>
+
+      <button type="submit" class="btn">Concluir e falar com o treinador →</button>
+      <p class="form-note">Ao concluir, você é direcionado ao WhatsApp do treinador com seu nome e o plano escolhido, pra receber o link de pagamento e liberar sua ficha.</p>
+    </form>
+
+  </div>
+</main>
+
+<footer>
+  Ferreira Trainning · Suas respostas ajudam a montar um treino mais seguro pra você.
+</footer>
+
+<script>
+(function(){
+  const WHATSAPP_TREINADOR = '5568984020529';
+
+  const picker = document.getElementById('plan-picker');
+  const anamnese = document.getElementById('anamnese');
+  const planoLabel = document.getElementById('plano-escolhido-label');
+  const trocaPlano = document.getElementById('troca-plano');
+  const restricaoQual = document.getElementById('a-restricao-qual');
+
+  let planoEscolhido = null;
+  let rotuloEscolhido = null;
+
+  picker.querySelectorAll('.plan-card').forEach(card=>{
+    card.addEventListener('click', ()=>{
+      planoEscolhido = card.dataset.plano;
+      rotuloEscolhido = card.dataset.rotulo;
+
+      picker.querySelectorAll('.plan-card').forEach(c=> c.classList.remove('selecionado'));
+      card.classList.add('selecionado');
+
+      planoLabel.textContent = 'Você escolheu: ' + rotuloEscolhido;
+      anamnese.hidden = false;
+      anamnese.scrollIntoView({behavior:'smooth', block:'start'});
+    });
+  });
+
+  trocaPlano.addEventListener('click', ()=>{
+    anamnese.hidden = true;
+    picker.scrollIntoView({behavior:'smooth', block:'start'});
+  });
+
+  document.querySelectorAll('input[name="restricao"]').forEach(r=>{
+    r.addEventListener('change', ()=>{
+      const sim = document.querySelector('input[name="restricao"]:checked').value === 'sim';
+      restricaoQual.style.display = sim ? 'block' : 'none';
+    });
+  });
+
+  anamnese.addEventListener('submit', (e)=>{
+    e.preventDefault();
+    if(!planoEscolhido) return;
+
+    const nome = document.getElementById('a-nome').value.trim();
+    if(!nome) return;
+
+    const mensagem = 'Olá, me chamo ' + nome + '. Acabei de preencher a anamnese no site e escolhi o ' + rotuloEscolhido + '. Como faço para realizar o pagamento e liberar minha ficha?';
+    const waLink = 'https://wa.me/' + WHATSAPP_TREINADOR + '?text=' + encodeURIComponent(mensagem);
+    window.open(waLink, '_blank', 'noopener');
+  });
+})();
+</script>
+
+</body>
+</html>
